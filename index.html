@@ -6,189 +6,215 @@
 <title>📖 My Daily Diary</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Dancing+Script&display=swap" rel="stylesheet">
 <style>
-/* GENERAL STYLES */
 body {
-    margin:0; padding:20px;
-    font-family:'Playfair Display', serif;
-    background: #f5f5f5; /* soft diary white */
-    color:#222;
-    min-height:100vh;
-    display:flex; flex-direction:column; align-items:center;
+  margin:0; padding:20px;
+  font-family:'Playfair Display', serif;
+  background:#eae7dc;
+  color:#222;
+  min-height:100vh;
+  display:flex; flex-direction:column; align-items:center;
 }
 
 /* HEADING */
 h1 {
-    font-family: 'Dancing Script', cursive;
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color:#111;
-    border-bottom: 2px solid #222;
-    padding-bottom: 10px;
-    text-align: center;
+  font-family: 'Dancing Script', cursive;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color:#111;
+  border-bottom: 2px solid #444;
+  padding-bottom: 10px;
+  text-align:center;
+}
+
+#greeting {
+  font-size:1.2rem;
+  margin-bottom:20px;
+  font-family:'Roboto', sans-serif;
+  color:#444;
+  text-align:center;
+}
+
+/* DIARY BOOK */
+#book {
+  position:relative;
+  width:90%; max-width:800px;
+  height:500px;
+  perspective:2000px;
+  margin-top:20px;
+}
+
+.page {
+  width:100%; height:100%;
+  background:#fff;
+  border:1px solid #ccc;
+  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  position:absolute;
+  top:0; left:0;
+  transform-origin:left center;
+  transform-style:preserve-3d;
+  transition:transform 1s ease;
+  border-radius:6px;
+  overflow:hidden;
+  padding:30px;
+}
+
+.page h2 {
+  font-family:'Dancing Script', cursive;
+  font-size:1.8rem;
+  margin-bottom:10px;
+}
+
+.page p {
+  font-family:'Roboto', sans-serif;
+  font-size:16px;
+  line-height:1.6;
+}
+
+/* FLIP STATES */
+.page.flipped {
+  transform:rotateY(-180deg);
+}
+
+/* NAVIGATION */
+#controls {
+  margin-top:20px;
+  display:flex; gap:20px;
+}
+#controls button {
+  padding:10px 20px;
+  border:none;
+  background:#111; color:#fff;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+#controls button:hover {
+  background:#444;
 }
 
 /* FORM */
 #updateForm {
-    background: #fff;
-    border:1px solid #ddd;
-    border-radius: 12px;
-    padding:20px;
-    width:100%; max-width:500px;
-    display:flex; flex-direction:column; gap:15px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  margin-top:30px;
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:20px;
+  width:100%; max-width:600px;
+  display:flex; flex-direction:column; gap:15px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
 
-#updateForm input, #updateForm textarea {
-    border:1px solid #ccc; border-radius:8px; padding:12px; font-size:16px;
-    outline:none; background:#fafafa; color:#111;
-    font-family:'Roboto', sans-serif;
-}
-
-#updateForm input:focus, #updateForm textarea:focus {
-    border-color:#000;
-    background:#fff;
+#updateForm textarea {
+  border:1px solid #ccc;
+  border-radius:8px;
+  padding:12px;
+  font-size:16px;
+  outline:none;
+  background:#fafafa;
+  font-family:'Roboto', sans-serif;
 }
 
 #updateForm button {
-    padding:12px; font-size:16px; border:none; border-radius:8px;
-    cursor:pointer; background:#111; color:#fff;
-    font-weight:bold; transition:0.3s;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#111; color:#fff;
+  font-weight:bold;
+  cursor:pointer;
 }
-#updateForm button:hover {
-    background:#444;
-}
-
-/* MOOD BUTTONS */
-.moodSelector { display:flex; gap:10px; justify-content:center; }
-.moodSelector button {
-    font-size:20px; background:#fafafa;
-    border:1px solid #ccc; padding:8px; border-radius:50%; cursor:pointer; transition:0.3s;
-}
-.moodSelector button:hover { background:#eee; transform: scale(1.1); }
-
-/* SEARCH */
-#searchInput {
-    padding:10px; border-radius:8px; border:1px solid #ccc; 
-    background:#fafafa; color:#111;
-}
-
-/* UPDATES LIST */
-#updatesList { margin-top:30px; width:100%; max-width:600px; display:flex; flex-direction:column; gap:15px; }
-
-.updateItem {
-    background: #fff; 
-    border:1px solid #ddd;
-    padding:15px; border-radius:12px; 
-    position:relative; transition:0.3s;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-    opacity:0; transform: translateY(20px); animation: fadeIn 0.6s forwards;
-}
-.updateItem h3 { margin:0 0 10px 0; font-family:'Dancing Script',cursive; font-size:1.5rem; color:#111; }
-.updateItem p { margin:0; font-size:16px; font-family:'Roboto',sans-serif; color:#333; }
-
-.updateItem button {
-    position:absolute; top:15px; right:15px; background:#b33;
-    border:none; padding:5px 10px; border-radius:6px; cursor:pointer;
-    font-weight:bold; color:#fff; transition:0.3s;
-}
-.updateItem button:hover { background:#d55; }
-
-/* ABOUT ME */
-#aboutMe {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 40px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    text-align: center;
-    color: #222;
-}
-#aboutMe h2 {
-    font-family: 'Dancing Script', cursive;
-    color: #000;
-    margin-bottom: 10px;
-    font-size: 2rem;
-}
-#aboutMe p { font-size:16px; line-height:1.6; }
-
-/* ANIMATIONS */
-@keyframes fadeIn { to { opacity:1; transform: translateY(0); } }
-
-@media(max-width:600px){ h1{font-size:2rem;} }
+#updateForm button:hover { background:#444; }
 </style>
 </head>
 <body>
 
 <h1>📖 My Daily Diary</h1>
+<div id="greeting"></div>
 
-<div id="updateForm">
-    <input type="date" id="dateInput" />
-    <textarea id="textInput" placeholder="Write your diary entry..."></textarea>
-    <div class="moodSelector">
-        <button type="button" data-mood="😄">😄</button>
-        <button type="button" data-mood="😴">😴</button>
-        <button type="button" data-mood="😢">😢</button>
-        <button type="button" data-mood="💪">💪</button>
-    </div>
-    <button id="addBtn">Save Entry</button>
-    <input type="text" id="searchInput" placeholder="Search diary..." />
+<div id="book"></div>
+
+<div id="controls">
+  <button id="prevBtn">⬅ Prev</button>
+  <button id="nextBtn">Next ➡</button>
 </div>
 
-<div id="updatesList"></div>
+<div id="updateForm">
+  <textarea id="textInput" placeholder="Write your diary entry..."></textarea>
+  <button id="addBtn">Add Entry</button>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    let updates = JSON.parse(localStorage.getItem('updates')) || [];
-    let currentMood = '';
+  let updates = JSON.parse(localStorage.getItem('updates')) || [];
+  let currentPage = 0;
 
-    document.querySelectorAll('.moodSelector button').forEach(btn => {
-        btn.addEventListener('click', ()=>{ currentMood = btn.dataset.mood; });
+  const book = document.getElementById('book');
+  const greetingDiv = document.getElementById('greeting');
+  const userName = "Shravan"; // <-- changeable name if needed
+
+  // Greeting Message
+  function updateGreeting(){
+    const hour = new Date().getHours();
+    let greeting = "Hello";
+    if(hour < 12) greeting = "Good Morning";
+    else if(hour < 18) greeting = "Good Afternoon";
+    else greeting = "Good Evening";
+
+    greetingDiv.innerHTML = `${greeting}, <strong>${userName}</strong> 🌸<br>Welcome back to your diary — let’s capture your thoughts today.`;
+  }
+
+  // Render Pages
+  function renderPages() {
+    book.innerHTML = '';
+    // Add intro page
+    const intro = document.createElement('div');
+    intro.className = 'page';
+    if(0 < currentPage) intro.classList.add('flipped');
+    intro.innerHTML = `<h2>Dear ${userName},</h2>
+      <p>This diary is your private space. Each page holds your stories, moods, and moments.<br><br>
+      Take a breath, relax, and let your words flow...</p>`;
+    book.appendChild(intro);
+
+    updates.forEach((u,i)=>{
+      const page = document.createElement('div');
+      page.className = 'page';
+      if(i+1 < currentPage) page.classList.add('flipped');
+      page.innerHTML = `<h2>${u.date}</h2><p>${u.text}</p>`;
+      book.appendChild(page);
     });
+  }
 
-    document.getElementById('addBtn').addEventListener('click', ()=> {
-        const date = document.getElementById('dateInput').value;
-        const text = document.getElementById('textInput').value;
-        if(!date||!text){ alert('Please add a date and entry!'); return; }
-        updates.push({date,text,mood:currentMood});
-        localStorage.setItem('updates',JSON.stringify(updates));
-        document.getElementById('textInput').value=''; currentMood='';
-        renderUpdates();
-    });
+  // Add Entry
+  document.getElementById('addBtn').addEventListener('click', ()=>{
+    const text = document.getElementById('textInput').value;
+    if(!text) { alert('Please write something first'); return; }
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    updates.push({date: `${date} — ${time}`, text});
+    localStorage.setItem('updates', JSON.stringify(updates));
+    document.getElementById('textInput').value='';
+    currentPage = updates.length; // jump to last page
+    renderPages();
+  });
 
-    function renderUpdates(filter=''){
-        const list=document.getElementById('updatesList');
-        list.innerHTML='';
-        updates.filter(u=>u.text.toLowerCase().includes(filter.toLowerCase()) || u.date.includes(filter))
-        .sort((a,b)=>new Date(b.date)-new Date(a.date))
-        .forEach((update,index)=>{
-            const div=document.createElement('div');
-            div.className='updateItem';
-            div.innerHTML=`<h3>${update.date} ${update.mood||''}</h3><p>${update.text}</p>
-                           <button data-index="${index}">Delete</button>`;
-            list.appendChild(div);
-        });
-
-        document.querySelectorAll('.updateItem button').forEach(btn=>{
-            btn.addEventListener('click', ()=>{
-                const i=btn.dataset.index; updates.splice(i,1);
-                localStorage.setItem('updates',JSON.stringify(updates));
-                renderUpdates(document.getElementById('searchInput').value);
-            });
-        });
+  // Navigation
+  document.getElementById('nextBtn').addEventListener('click', ()=>{
+    if(currentPage < updates.length) {
+      currentPage++;
+      renderPages();
     }
+  });
+  document.getElementById('prevBtn').addEventListener('click', ()=>{
+    if(currentPage > 0) {
+      currentPage--;
+      renderPages();
+    }
+  });
 
-    renderUpdates();
-    document.getElementById('searchInput').addEventListener('input', e=>{ renderUpdates(e.target.value); });
+  updateGreeting();
+  renderPages();
 });
 </script>
-
-<div id="aboutMe">
-    <h2>About Me</h2>
-    <p>Hi! I'm <strong>Shravan Kumar Dubey</strong>, the creator of this Daily Diary. This app helps you record your life in a simple, private, and personal diary style — just like writing in a journal, but digital.</p>
-    <p>Made with ☕ & a love for memories.</p>
-</div>
-
 </body>
 </html>
