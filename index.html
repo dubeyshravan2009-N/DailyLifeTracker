@@ -3,145 +3,137 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✨ Daily Life Tracker ✨</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto&display=swap" rel="stylesheet">
+<title>📖 My Daily Diary</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Dancing+Script&display=swap" rel="stylesheet">
 <style>
-    #aboutMe {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 40px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 0 20px rgba(0,255,255,0.2);
-    text-align: center;
-    color: #fff;
-    animation: fadeIn 1s ease forwards;
-}
-#aboutMe:hover {
-    box-shadow: 0 0 30px #ff00ff, 0 0 30px #00ffff;
-    transform: scale(1.02);
-    transition: 0.3s;
-}
-
-
-#aboutMe h2 {
-    font-family: 'Orbitron', sans-serif;
-    color: #ff00ff;
-    margin-bottom: 10px;
-}
-
-#aboutMe p {
-    font-size: 16px;
-    line-height: 1.5;
-}
-
 /* GENERAL STYLES */
 body {
     margin:0; padding:20px;
-    font-family:'Roboto', sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    color:#fff;
+    font-family:'Playfair Display', serif;
+    background: #f5f5f5; /* soft diary white */
+    color:#222;
     min-height:100vh;
     display:flex; flex-direction:column; align-items:center;
-    user-select:none; /* Prevent text selection */
 }
 
+/* HEADING */
 h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    background: linear-gradient(90deg, #ff00ff, #00ffff);
-    background-clip: text;           /* Standard property */
-    -webkit-background-clip: text;   /* For Chrome/Safari */
-    -webkit-text-fill-color: transparent;
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color:#111;
+    border-bottom: 2px solid #222;
+    padding-bottom: 10px;
     text-align: center;
 }
 
-
-/* FORM STYLING */
+/* FORM */
 #updateForm {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 15px; padding:20px;
+    background: #fff;
+    border:1px solid #ddd;
+    border-radius: 12px;
+    padding:20px;
     width:100%; max-width:500px;
     display:flex; flex-direction:column; gap:15px;
-    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
 #updateForm input, #updateForm textarea {
-    border:none; border-radius:10px; padding:12px; font-size:16px;
-    outline:none; background:rgba(255,255,255,0.1); color:#fff;
-    transition:0.3s;
+    border:1px solid #ccc; border-radius:8px; padding:12px; font-size:16px;
+    outline:none; background:#fafafa; color:#111;
+    font-family:'Roboto', sans-serif;
 }
 
 #updateForm input:focus, #updateForm textarea:focus {
-    background: rgba(255,255,255,0.2);
-    box-shadow: 0 0 10px #00ffff;
+    border-color:#000;
+    background:#fff;
 }
 
 #updateForm button {
-    padding:12px; font-size:16px; border:none; border-radius:10px;
-    cursor:pointer; background: linear-gradient(45deg,#ff00ff,#00ffff);
-    color:#fff; font-weight:bold; transition:0.3s;
+    padding:12px; font-size:16px; border:none; border-radius:8px;
+    cursor:pointer; background:#111; color:#fff;
+    font-weight:bold; transition:0.3s;
 }
 #updateForm button:hover {
-    transform: scale(1.05); box-shadow:0 0 15px #ff00ff,0 0 15px #00ffff;
+    background:#444;
+}
+
+/* MOOD BUTTONS */
+.moodSelector { display:flex; gap:10px; justify-content:center; }
+.moodSelector button {
+    font-size:20px; background:#fafafa;
+    border:1px solid #ccc; padding:8px; border-radius:50%; cursor:pointer; transition:0.3s;
+}
+.moodSelector button:hover { background:#eee; transform: scale(1.1); }
+
+/* SEARCH */
+#searchInput {
+    padding:10px; border-radius:8px; border:1px solid #ccc; 
+    background:#fafafa; color:#111;
 }
 
 /* UPDATES LIST */
 #updatesList { margin-top:30px; width:100%; max-width:600px; display:flex; flex-direction:column; gap:15px; }
 
 .updateItem {
-    background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
-    padding:15px; border-radius:15px; position:relative; transition:0.3s;
-    border-left:5px solid #00ffff;
-    opacity:0; transform: translateX(-50px); animation: fadeIn 0.5s forwards;
+    background: #fff; 
+    border:1px solid #ddd;
+    padding:15px; border-radius:12px; 
+    position:relative; transition:0.3s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    opacity:0; transform: translateY(20px); animation: fadeIn 0.6s forwards;
 }
-.updateItem h3 { margin:0 0 10px 0; font-family:'Orbitron',sans-serif; }
-.updateItem p { margin:0; font-size:16px; }
+.updateItem h3 { margin:0 0 10px 0; font-family:'Dancing Script',cursive; font-size:1.5rem; color:#111; }
+.updateItem p { margin:0; font-size:16px; font-family:'Roboto',sans-serif; color:#333; }
 
 .updateItem button {
-    position:absolute; top:15px; right:15px; background:#ff0000;
-    border:none; padding:5px 10px; border-radius:8px; cursor:pointer;
+    position:absolute; top:15px; right:15px; background:#b33;
+    border:none; padding:5px 10px; border-radius:6px; cursor:pointer;
     font-weight:bold; color:#fff; transition:0.3s;
 }
-.updateItem button:hover { transform:scale(1.1); box-shadow:0 0 10px #ff0000; }
+.updateItem button:hover { background:#d55; }
 
-/* MOOD BUTTONS */
-.moodSelector { display:flex; gap:10px; justify-content:center; }
-.moodSelector button {
-    font-size:20px; background: rgba(255,255,255,0.1);
-    border:none; padding:8px; border-radius:50%; cursor:pointer; transition:0.3s;
+/* ABOUT ME */
+#aboutMe {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    color: #222;
 }
-.moodSelector button:hover { transform: scale(1.2); box-shadow:0 0 10px #00ffff; }
-
-/* SEARCH */
-#searchInput { padding:10px; border-radius:10px; border:none; background: rgba(255,255,255,0.1); color:#fff; outline:none; }
+#aboutMe h2 {
+    font-family: 'Dancing Script', cursive;
+    color: #000;
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+#aboutMe p { font-size:16px; line-height:1.6; }
 
 /* ANIMATIONS */
-@keyframes fadeIn { to { opacity:1; transform: translateX(0); } }
+@keyframes fadeIn { to { opacity:1; transform: translateY(0); } }
 
-/* RESPONSIVE */
-@media(max-width:600px){ h1{font-size:2rem;} #updateForm,#updatesList{width:100%;} }
+@media(max-width:600px){ h1{font-size:2rem;} }
 </style>
 </head>
 <body>
 
-<h1>✨ Daily Life Tracker ✨</h1>
+<h1>📖 My Daily Diary</h1>
 
 <div id="updateForm">
     <input type="date" id="dateInput" />
-    <textarea id="textInput" placeholder="Write your daily update..."></textarea>
+    <textarea id="textInput" placeholder="Write your diary entry..."></textarea>
     <div class="moodSelector">
         <button type="button" data-mood="😄">😄</button>
         <button type="button" data-mood="😴">😴</button>
         <button type="button" data-mood="😢">😢</button>
         <button type="button" data-mood="💪">💪</button>
     </div>
-    <button id="addBtn">Add Update</button>
-    <input type="text" id="searchInput" placeholder="Search updates..." />
+    <button id="addBtn">Save Entry</button>
+    <input type="text" id="searchInput" placeholder="Search diary..." />
 </div>
 
 <div id="updatesList"></div>
@@ -151,23 +143,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let updates = JSON.parse(localStorage.getItem('updates')) || [];
     let currentMood = '';
 
-    // MOOD BUTTONS
     document.querySelectorAll('.moodSelector button').forEach(btn => {
         btn.addEventListener('click', ()=>{ currentMood = btn.dataset.mood; });
     });
 
-    // ADD UPDATE
     document.getElementById('addBtn').addEventListener('click', ()=> {
         const date = document.getElementById('dateInput').value;
         const text = document.getElementById('textInput').value;
-        if(!date||!text){ alert('Add both date and update!'); return; }
+        if(!date||!text){ alert('Please add a date and entry!'); return; }
         updates.push({date,text,mood:currentMood});
         localStorage.setItem('updates',JSON.stringify(updates));
         document.getElementById('textInput').value=''; currentMood='';
         renderUpdates();
     });
 
-    // RENDER UPDATES
     function renderUpdates(filter=''){
         const list=document.getElementById('updatesList');
         list.innerHTML='';
@@ -176,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .forEach((update,index)=>{
             const div=document.createElement('div');
             div.className='updateItem';
-            div.style.borderLeftColor=update.mood==='😄'?'#00ff00':update.mood==='😴'?'#8888ff':update.mood==='😢'?'#ff5555':update.mood==='💪'?'#ffcc00':'#00ffff';
             div.innerHTML=`<h3>${update.date} ${update.mood||''}</h3><p>${update.text}</p>
                            <button data-index="${index}">Delete</button>`;
             list.appendChild(div);
@@ -192,21 +180,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderUpdates();
-
-    // SEARCH FUNCTION
     document.getElementById('searchInput').addEventListener('input', e=>{ renderUpdates(e.target.value); });
-
-    // BLOCK RIGHT CLICK & SHORTCUTS
-    document.addEventListener('contextmenu', e=>e.preventDefault());
-    document.addEventListener('keydown', e=>{
-        if(e.ctrlKey || e.key==='F12' || e.key==='s' || e.key==='u'){ e.preventDefault(); alert('Action blocked!'); }
-    });
 });
 </script>
+
 <div id="aboutMe">
     <h2>About Me</h2>
-    <p>Hi! I'm <strong>Shravan Kumar Dubey</strong>, the creator of this Daily Life Tracker. This app is designed to help you log your daily life updates, moods, and memories in a futuristic, sleek interface. All updates are saved locally in your browser, keeping your data private and secure.</p>
-    <p>Created with ❤️ and futuristic vibes.</p>
+    <p>Hi! I'm <strong>Shravan Kumar Dubey</strong>, the creator of this Daily Diary. This app helps you record your life in a simple, private, and personal diary style — just like writing in a journal, but digital.</p>
+    <p>Made with ☕ & a love for memories.</p>
 </div>
 
 </body>
