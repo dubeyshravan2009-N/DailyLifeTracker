@@ -9,7 +9,7 @@
 body {
   margin:0; padding:20px;
   font-family:'Playfair Display', serif;
-  background:#eae7dc;
+  background: linear-gradient(135deg, #f3f2ed, #eae7dc);
   color:#222;
   min-height:100vh;
   display:flex; flex-direction:column; align-items:center;
@@ -19,28 +19,33 @@ body {
 h1 {
   font-family: 'Dancing Script', cursive;
   font-size: 3rem;
-  margin-bottom: 10px;
-  color:#111;
+  margin-bottom: 5px;
+  color:#2c2c2c;
   border-bottom: 2px solid #444;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   text-align:center;
 }
 
+/* GREETING */
 #greeting {
-  font-size:1.2rem;
-  margin-bottom:20px;
+  font-size:1.3rem;
+  margin:10px 0 25px 0;
   font-family:'Roboto', sans-serif;
   color:#444;
   text-align:center;
+  background:#fff;
+  padding:10px 20px;
+  border-radius:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
 
-/* DIARY BOOK */
+/* BOOK */
 #book {
   position:relative;
-  width:90%; max-width:800px;
-  height:500px;
+  width:95%; max-width:850px;
+  height:520px;
   perspective:2000px;
-  margin-top:20px;
+  margin-top:10px;
 }
 
 .page {
@@ -52,45 +57,56 @@ h1 {
   top:0; left:0;
   transform-origin:left center;
   transform-style:preserve-3d;
-  transition:transform 1s ease;
-  border-radius:6px;
+  transition:transform 0.8s ease;
+  border-radius:8px;
   overflow:hidden;
-  padding:30px;
+  padding:40px 30px;
+  background-image: repeating-linear-gradient(#fff, #fff 28px, #eaeaea 29px);
 }
 
 .page h2 {
   font-family:'Dancing Script', cursive;
-  font-size:1.8rem;
-  margin-bottom:10px;
+  font-size:1.6rem;
+  margin-bottom:12px;
+  color:#333;
+  border-bottom:1px dashed #999;
+  padding-bottom:5px;
 }
 
 .page p {
   font-family:'Roboto', sans-serif;
-  font-size:16px;
+  font-size:15px;
   line-height:1.6;
+  color:#222;
+  background:rgba(255,255,255,0.8);
+  padding:12px 15px;
+  border-left:3px solid #666;
+  margin-bottom:10px;
+  border-radius:6px;
+  max-width:90%;
 }
 
-/* FLIP STATES */
+/* FLIP EFFECT */
 .page.flipped {
   transform:rotateY(-180deg);
 }
 
-/* NAVIGATION */
+/* CONTROLS */
 #controls {
   margin-top:20px;
   display:flex; gap:20px;
 }
 #controls button {
-  padding:10px 20px;
+  padding:10px 22px;
   border:none;
-  background:#111; color:#fff;
+  background:#2c2c2c; color:#fff;
   border-radius:6px;
   cursor:pointer;
   font-weight:bold;
   transition:0.3s;
 }
 #controls button:hover {
-  background:#444;
+  background:#555;
 }
 
 /* FORM */
@@ -100,7 +116,7 @@ h1 {
   border:1px solid #ddd;
   border-radius:12px;
   padding:20px;
-  width:100%; max-width:600px;
+  width:100%; max-width:650px;
   display:flex; flex-direction:column; gap:15px;
   box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
@@ -113,17 +129,26 @@ h1 {
   outline:none;
   background:#fafafa;
   font-family:'Roboto', sans-serif;
+  min-height:100px;
+  resize:none;
 }
 
 #updateForm button {
   padding:12px;
   border:none;
   border-radius:8px;
-  background:#111; color:#fff;
+  background:#2c2c2c; color:#fff;
   font-weight:bold;
   cursor:pointer;
 }
-#updateForm button:hover { background:#444; }
+#updateForm button:hover { background:#555; }
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .page { padding:25px; }
+  h1 { font-size:2.2rem; }
+  #book { height:400px; }
+}
 </style>
 </head>
 <body>
@@ -150,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const book = document.getElementById('book');
   const greetingDiv = document.getElementById('greeting');
-  const userName = "Shravan"; // <-- changeable name if needed
+  const userName = "Shravan"; // <-- changeable name
 
   // Greeting Message
   function updateGreeting(){
@@ -160,19 +185,19 @@ document.addEventListener("DOMContentLoaded", () => {
     else if(hour < 18) greeting = "Good Afternoon";
     else greeting = "Good Evening";
 
-    greetingDiv.innerHTML = `${greeting}, <strong>${userName}</strong> 🌸<br>Welcome back to your diary — let’s capture your thoughts today.`;
+    greetingDiv.innerHTML = `${greeting}, <strong>${userName}</strong> 🌸<br>Welcome back — your diary is ready for today’s story.`;
   }
 
   // Render Pages
   function renderPages() {
     book.innerHTML = '';
-    // Add intro page
+    // Intro Page
     const intro = document.createElement('div');
     intro.className = 'page';
     if(0 < currentPage) intro.classList.add('flipped');
     intro.innerHTML = `<h2>Dear ${userName},</h2>
-      <p>This diary is your private space. Each page holds your stories, moods, and moments.<br><br>
-      Take a breath, relax, and let your words flow...</p>`;
+      <p>This is your personal diary. Each page holds a thought, a feeling, or a moment.<br><br>
+      Flip through and let your story grow...</p>`;
     book.appendChild(intro);
 
     updates.forEach((u,i)=>{
@@ -186,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add Entry
   document.getElementById('addBtn').addEventListener('click', ()=>{
-    const text = document.getElementById('textInput').value;
+    const text = document.getElementById('textInput').value.trim();
     if(!text) { alert('Please write something first'); return; }
     const now = new Date();
     const date = now.toLocaleDateString();
@@ -194,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updates.push({date: `${date} — ${time}`, text});
     localStorage.setItem('updates', JSON.stringify(updates));
     document.getElementById('textInput').value='';
-    currentPage = updates.length; // jump to last page
+    currentPage = updates.length; // go to last page
     renderPages();
   });
 
